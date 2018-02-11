@@ -1,0 +1,22 @@
+ s = [-2.7 -1.6 -1.2 1.9 2 3.5 4.2];
+ partition = [1.5, 2.5, 3.5];
+ qnt = [1, 2, 3, 4];
+ [I, Q] = quantiz(s, partition, qnt);
+ stem(s);
+ hold on;
+ stem(Q, '>r');
+ grid on
+ dec2bin(Q);
+
+--------------------------------------------------------
+
+t = 0:0.01:2*pi;
+s = 4*sin(pi*t);
+p = [-3, -2, -1, 0, 1, 2, 2.5, 3.5];
+q = [-3.5, -3, -2, -1, 0, 1, 2, 3, 3.5];
+[I, Q] = quantiz(s, p, q);
+plot(t, s, 'b', t, Q, '.r');
+Er = s-Q;
+figure
+plot(t, Er)
+Emax = max(abs(Q-s))
