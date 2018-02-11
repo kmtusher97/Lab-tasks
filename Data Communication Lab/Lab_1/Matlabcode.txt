@@ -1,1 +1,10 @@
-vv
+x(t) = A*sin(2*pi*f*t+theta)
+t = 0:0.01:2*pi;
+A = 2;
+f = 2;
+theta = pi/3;
+x = A*sin(2*pi*f*t+theta);
+plot(t, x);
+y = A*sin(2*pi*f*t);
+plot(t, x, 'r', t, y, 'b');
+legend('Phase pi/3', 'Pulse 0');
