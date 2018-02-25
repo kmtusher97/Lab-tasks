@@ -1,0 +1,41 @@
+% lab 3
+
+M = 200000;           % numberof bits
+for k = 1:8
+  SNR = 2+k*2;
+  tx = randi(2, M, 1)-1;  % 2 - [0, 1], M - NofBit, 1 - 1D array
+  rx = awgn(tx, SNR);   % adding noise
+  e(k) = 0;             % initialization of error
+  for i = 1:M
+    if tx(i)==1;
+      if rx(i)<=0.5;
+        e(k) = e(k)+1;
+      end
+    end
+    
+    if tx(i)==0;
+      if rx(i)>=0.5;
+        e(k) = e(k)+1;
+      end
+    end
+  end
+end                   % end of SNR loop
+
+pe = e/M;
+
+SNR = 4:2:18;
+plot(SNR, pe, 'r>:');
+
+xlabel('SNR')
+ylabel('Pe')
+
+SNR = 4:2:18;
+SNRa = 10.^(SNR/10);
+Pez = qfunc(sqrt(SNRa/4));
+plot(SNR, pe, 'r>:', SNR, Pez, 'b<:')
+legend('Simulation', 'Theory');
+
+xlabel('SNR');
+ylabel('Pe');
+grid on;
+gridon();
