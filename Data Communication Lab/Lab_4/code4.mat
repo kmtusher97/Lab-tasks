@@ -1,0 +1,11 @@
+M = 2;
+N = 2000;
+x = randi([0, M-1], N, 1);
+tone = 8;
+Fs = 100;
+y = pskmod(x, M, pi/M);
+yr = awgn(y, -30);
+z = pskdemod(yr, M, pi/M);
+s = symerr(x, z)
+
+periodogram(real(y), [], 512, Fs);
