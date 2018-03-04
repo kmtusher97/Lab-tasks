@@ -1,0 +1,23 @@
+fs = 1000;
+ts = 1/fs;
+fd = 25;
+t = 0:ts:2;
+t = t';
+x = sin(2*pi*2*t);
+M_s = comm.FMModulator('SampleRate',fs,'FrequencyDeviation',fd);
+y = step(M_s, x);
+subplot(3, 1, 1)
+plot(t, [x real(y)])
+
+
+DEMOD = comm.FMDemodulator('SampleRate',fs,'FrequencyDeviation',fd);
+z = step(DEMOD,y);
+subplot(3,1,2)
+plot(t,z,'r')
+xlabel('Time(s)')
+ylabel('Amplitude')
+title('Demodulated signal')
+grid on
+
+subplot(3,1,3)
+periodogram(real(y),[],512,fs);
