@@ -1,0 +1,8 @@
+M = 2;
+x = randi([0, M-1], 2000, 1);
+tone = 8;
+Fs = 100;
+N = 2000;
+y = pskmod(x, M, pi/M);
+z = pskdemod(y, M, pi/M);
+s = symerr(x, z)
