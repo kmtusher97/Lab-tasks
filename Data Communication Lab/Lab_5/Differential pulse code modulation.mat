@@ -1,0 +1,15 @@
+%Differential pulse code modulation (DPCM)
+
+predictor = [1, 0];
+partition = [-1:0.1:0.9];
+codebook = [-1:0.1:1];
+t=0:pi/100:2*pi;
+x = sin(pi*t);
+encodedx = dpcmenco(x, codebook, partition, predictor);
+decodedx = dpcmdeco(encodedx, codebook, predictor);
+plot(t, x, 'r', t, decodedx, 'k--');
+legend('Original', 'Recovered');
+grid on;
+xlabel('time');
+ylabel('Original and Recovered signal');
+emax = max(abs(x) - abs(decodedx))
