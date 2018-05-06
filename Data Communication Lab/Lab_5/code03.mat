@@ -1,0 +1,18 @@
+symbols = [1 2 3 4 5];
+p = [0.4 0.2 0.2 0.1 0.1];
+[dict, avgien] = huffmandict(symbols, p);
+hcode = huffmanenco(symbols, dict);
+dhig = huffmandeco(hcode, dict);
+
+dict
+dict{1, :}
+dict{2, :}
+hcode
+avgien
+
+sig = randsrc(100, 1, [symbols; p])
+comp = huffmanenco(sig, dict)
+dsig = huffmandeco(comp, dict)
+isequal(sig, dsig)
+
+
