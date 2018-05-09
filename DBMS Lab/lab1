@@ -1,0 +1,186 @@
+create table vendor
+(
+    vendorid        char(2)              NOT NULL,
+    vendorname      varchar(25)          NOT NULL,
+    PRIMARY KEY ( vendorid )
+);
+create table category
+(
+    categoryid        char(2)            NOT NULL,
+    categoryname      varchar(25)        NOT NULL,
+    PRIMARY KEY ( categoryid )
+);
+create table product
+(
+    productid         char(3)            NOT NULL,
+    productname       varchar(25)        NOT NULL,
+    productprice      numeric(7, 2)      NOT NULL,
+    vendorid          char(2)            NOT NULL,
+    categoryid        char(2)            NOT NULL,
+    PRIMARY KEY ( productid ),
+    FOREIGN KEY ( vendorid ) REFERENCES vendor( vendorid ),
+    FOREIGN KEY ( categoryid ) REFERENCES category( categoryid )
+);
+create table region
+(
+    regionid         char(1)             NOT NULL,
+    regionname       varchar(25)         NOT NULL,
+    PRIMARY KEY ( regionid )
+);
+create table store
+(
+    storeid          varchar(3)          NOT NULL,
+    storezip         char(5)             NOT NULL,
+    regionid         char(1)             NOT NULL,
+    PRIMARY KEY ( storeid ),
+    FOREIGN KEY ( regionid ) REFERENCES region( regionid )
+);
+create table customer
+(
+    customerid       char(7)             NOT NULL,
+    customername     varchar(15)         NOT NULL,
+    customerzip      char(5)             NOT NULL,
+    PRIMARY KEY ( customerid )
+);
+create table salestransection
+(
+    tid              varchar(8)          NOT NULL,
+    customerid       char(7)             NOT NULL,
+    storeid          varchar(3)          NOT NULL,
+    tdate            date                NOT NULL,
+    PRIMARY KEY ( tid ),
+    FOREIGN KEY ( customerid ) REFERENCES customer( customerid ),
+    FOREIGN KEY ( storeid ) REFERENCES store( storeid )
+);
+create table soldvia
+(
+    productid        char(3)             NOT NULL,
+    tid              varchar(8)          NOT NULL,
+    noofitems        int                 NOT NULL,
+    PRIMARY KEY ( productid, tid ),
+    FOREIGN KEY ( productid ) REFERENCES product( productid ),
+    FOREIGN KEY ( tid ) REFERENCES salestransection( tid )
+);
+
+//////////////////////////////////////////////////////////////
+
+drop table soldvia;
+drop table salestransection;
+drop table store;
+drop table product;
+drop table vendor;
+drop table region;
+drop table category;
+drop table customer;
+
+//////////////////////////////////////////////////////////////
+
+insert into vendor values('PG','Pacifica Gear');
+insert into vendor values('MK','Mountain King');
+
+insert into category values('CP','Camping');
+insert into category values('FW','Footwear');
+
+insert into product values('1X1','Zzz Bag',200,'PG','CP');
+insert into product values('2X2','Easy Boot',70,'MK','FW');
+insert into product values('3X3','Cosy Sock',15,'MK','FW');
+insert into product values('4X4','Dura Boot',90,'PG','FW');
+insert into product values('5X5','Tiny Tent',150,'MK','CP');
+insert into product values('6X6','Biggy Tent',250,'MK','CP');
+
+insert into region values('C','Chicagoland');
+insert into region values('T','TriState');
+
+insert into store values('S1','60600','C');
+insert into store values('S2','60605','C');
+insert into store values('S3','35400','T');
+
+insert into customer values('1-2-333','Tina','60137');
+insert into customer values('2-3-444','Tony','60611');
+insert into customer values('3-4-555','Pam','35401');
+
+
+insert into salestransection values('T111','1-2-333','S1','01/Jan/2013');
+insert into salestransection values('T222','2-3-444','S2','01/Jan/2013');
+insert into salestransection values('T333','1-2-333','S3','01/Jan/2013');
+insert into salestransection values('T444','3-4-555','S3','01/Jan/2013');
+insert into salestransection values('T555','2-3-444','S3','01/Jan/2013');
+
+insert into soldvia values('1X1','T111',1);
+insert into soldvia values('2X2','T222',1);
+insert into soldvia values('3X3','T333',5);
+insert into soldvia values('1X1','T333',1);
+insert into soldvia values('4X4','T444',1);
+insert into soldvia values('2X2','T444',2);
+insert into soldvia values('4X4','T555',4);
+insert into soldvia values('5X5','T555',2);
+insert into soldvia values('6X6','T555',1);
+
+////////////////////////////////////////////////////////////////////////
+
+
+
+select productid, productname, productprice, vendorid, categoryid from product;
+select productname, productid, vendorid, categoryid, productprice from product;
+select productid, productprice from product;
+select productid, productprice * 1.1 from product;
+
+select productid, productname, vendorid, productprice
+from product where productprice > 100;
+
+select productid, productname, vendorid, productprice
+from product where productprice <= 110 and categoryid = 'FW';
+
+select vendorid from product;
+
+select distinct vendorid from product;
+
+select productid, productname, categoryid, productprice
+from product where categoryid = 'FW' order by productprice;
+
+select productid, productname, categoryid, productprice
+from product where categoryid = 'FW' order by productprice desc;
+
+select productid, productname, categoryid, productprice
+from product order by productprice, categoryid;
+
+select avg( productprice ) from product;
+
+select count(*) from product;
+
+select count( distinct vendorid ) from product;
+
+select count(*), avg( productprice ), min( productprice ), max( productprice )
+from product where categoryid = 'CP';
+
+select vendorid, count(*), avg( productprice ) from product group by vendorid;
+
+select count(*), avg( productprice ) from product group by vendorid;
+
+select vendorid, count(*) from product where productprice >= 100 group by vendorid;
+
+select vendorid, categoryid, count(*),avg( productprice ) from product
+group by vendorid, categoryid;
+
+select productid,sum( noofitems ) from soldvia group by productid;
+
+select productid,count(*) from soldvia group by productid;
+
+select vendorid, categoryid, count(*),avg( productprice ) from product
+group by vendorid, categoryid having count(*)>1;
+
+select vendorid, categoryid, count(*),avg( productprice ) from product
+where productprice>=50 group by vendorid, categoryid having count(*)>1;
+
+select productid,sum( noofitems ) from soldvia group by productid having sum(noofitems)>3;
+
+select productid,count(*) from soldvia group by productid having count(*)>1;
+
+select productid from soldvia group by productid having sum(noofitems)>3;
+
+select productid from soldvia group by productid having sum(noofitems)>1;
+
+select productid, productname, productprice
+from product where productprice < (select avg( productprice ) from product);
+
+
