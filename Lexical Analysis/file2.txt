@@ -1,0 +1,36 @@
+Data Type: int
+Found relational operator: =
+Found number: 1
+Found semicolon: ;
+
+Found Left Parenthisis: (
+Found relational operator: ==
+Found number: 0
+Found Right Parenthisis: )
+Found number: 1
+Found semicolon: ;
+
+Data Type: float
+Found relational operator: =
+Found number: 5.6
+Found semicolon: ;
+
+Data Type: long
+Found relational operator: =
+Found number: 1000
+Found semicolon: ;
+
+Found Left Parenthisis: (
+Data Type: int
+Found relational operator: =
+Found number: 0
+Found semicolon: ;
+Found relational operator: <
+Found number: 10
+Found semicolon: ;
+Found arithmatic operator: +
+Found arithmatic operator: +
+Found Right Parenthisis: )
+Found semicolon: ;
+ID List: asdasd i var1 var2 x3
+Keyword List: for if return then
